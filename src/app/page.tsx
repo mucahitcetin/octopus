@@ -1,10 +1,12 @@
+import LoginPage from "./pages/login/page";
 import ProductList from "./pages/product-list"
+
 
 const Home = () => {
   return (
     <div className=" mx-auto p-4">
 
-      <ProductList />
+      <LoginPage />
     </div>
   );
 };
