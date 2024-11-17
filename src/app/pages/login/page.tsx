@@ -1,9 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import Button from "@/app/components/Button";
 
 const LoginPage = () => {
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword((prevState) => !prevState);
+    };
+
     return (
         <div className="flex h-screen">
             {/* Sol Kısım */}
@@ -74,14 +81,23 @@ const LoginPage = () => {
                         </label>
                         <div className="relative">
                             <input
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 id="password"
                                 placeholder="Enter your password"
                                 className="mt-1 w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
-                            <span className="absolute inset-y-0 right-4 flex items-center text-gray-400">
-                                🔒
-                            </span>
+                            <button
+                                type="button"
+                                onClick={togglePasswordVisibility}
+                                className="absolute inset-y-0 right-4 flex items-center text-gray-400 focus:outline-none"
+                            >
+                                <Image
+                                    src={showPassword ? "/icons/unlock.svg" : "/icons/lock.svg"}
+                                    alt={showPassword ? "Unlock" : "Lock"}
+                                    width={20}
+                                    height={20}
+                                />
+                            </button>
                         </div>
                     </div>
 
