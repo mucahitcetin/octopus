@@ -20,7 +20,7 @@ const LoginPage = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void 
             const response = await login(username, password);
             console.log("Login Successful:", response);
             setIsLoggedIn(true);
-            router.push("/product-list"); // Rotaya yönlendir
+            router.push("/product-list");
         } catch (error) {
             setError("Invalid credentials.");
             console.error("Login Failed:", error);
@@ -30,7 +30,7 @@ const LoginPage = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void 
     return (
         <div className="flex flex-col lg:flex-row h-screen">
             {/* Sol Kısım */}
-            <div className="flex flex-col bg-gray-50 w-full lg:w-1/2 p-8 lg:p-12 relative items-center justify-center">
+            <div className="flex flex-col bg-[#F8FAFC] w-full lg:w-3/5 p-8 lg:p-12 relative items-center justify-center">
                 {/* Logo */}
                 <div className="absolute top-4 left-8">
                     <Image
@@ -47,9 +47,10 @@ const LoginPage = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void 
                     layout="intrinsic"
                     width={411}
                     height={411}
+                    className="mt-10"
                 />
                 {/* Alt Yazılar */}
-                <div className="px-8">
+                <div className="">
                     <h1 className="text-3xl font-bold text-gray-800 mb-4">
                         Let Free Your Creativity with Our Intuitive Content Creator
                     </h1>
@@ -62,11 +63,11 @@ const LoginPage = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void 
             </div>
 
             {/* Sağ Kısım */}
-            <div className="flex flex-col justify-center w-full lg:w-1/2 p-8 lg:p-12">
+            <div className="flex flex-col bg-white justify-center w-full lg:w-2/5 p-8 lg:p-12">
                 <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">Welcome Octopus!</h2>
                 <p className="text-gray-600 mb-8 text-center">Manage your smart signage, watch your company grow.</p>
 
-                <form className="space-y-6" onSubmit={handleLogin}>
+                <form className="space-y-6 w-5/6 mx-auto p-6" onSubmit={handleLogin}>
                     <div>
                         <label htmlFor="username" className="block text-sm font-medium text-gray-700">
                             E-mail Address*
