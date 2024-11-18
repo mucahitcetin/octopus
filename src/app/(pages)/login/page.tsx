@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { login } from "@/app/services/auth";
+import { login } from "@/app/api";
 import Button from "@/app/components/Button";
 import { useRouter } from "next/navigation";
 
