@@ -12,6 +12,19 @@ const base = "https://dummyjson.com";
 
 type Params = { page?: string; search?: string; category?: string } | undefined;
 
+export const fetchProductById = async (id: number): Promise<Product> => {
+  try {
+    const response = await api.get(`/products/${id}`);
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      console.error("API Hatası (fetchProductById):", error.response?.data);
+      throw new Error(error.response?.data?.message || "Ürün detayları yüklenemedi.");
+    }
+    throw new Error("Beklenmeyen bir hata oluştu.");
+  }
+};
+
 export const fetchProducts = async (params: Params): Promise<fetchProductsRes> => {
   try {
     const skip = (Number(params?.page || 1) - 1) * 9;
@@ -33,44 +46,46 @@ export const fetchProducts = async (params: Params): Promise<fetchProductsRes> =
 
     const data = await response.json();
     return data;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("API Hatası (fetchProducts):", error);
     throw new Error("Ürünler yüklenemedi.");
   }
 };
 
-export const fetchProductById = async (id: number): Promise<Product> => {
-  try {
-    const response = await api.get(`/products/${id}`);
-    return response.data;
-  } catch (error: any) {
-    console.error("API Hatası (fetchProductById):", error);
-    throw new Error(error.response?.data?.message || "Ürün detayları yüklenemedi.");
-  }
-};
 
 export const login = async (username: string, password: string) => {
   try {
-    const response = await axios.post("https://dummyjson.com/auth/login", {
-      username,
-      password,
-      expiresInMins: 30,
-    });
-
+    const response = await axios.post(
+      'https://dummyjson.com/auth/login',
+      {
+        username,
+        password,
+        expiresInMins: 30,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
     return response.data;
-  } catch (error: any) {
-    console.error("API Hatası (login):", error.response?.data);
-    throw new Error(error.response?.data?.message || "Giriş başarısız.");
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Login failed.');
+    }
+    throw new Error('An unexpected error occurred.');
   }
 };
 
-
-export const addToCart = async (cartId: number, products: any[]) => {
+export const addToCart = async (cartId: number, products: { id: number; quantity: number }[]) => {
   try {
-    const response = await api.put(`/carts/${cartId}`, { products });
+    const response = await axios.put(`https://dummyjson.com/carts/${cartId}`, { products });
     return response.data;
-  } catch (error: any) {
-    console.error("API Hatası (addToCart):", error);
-    throw new Error(error.response?.data?.message || "Sepete ürün ekleme başarısız.");
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Adding to cart failed.');
+    }
+    throw new Error('An unexpected error occurred.');
   }
 };
+

@@ -12,10 +12,11 @@ import OrderSummary from "@/app/components/OrderSummary";
 import Button from "@/app/components/Button";
 import Loader from "@/app/components/Loader";
 import Error from "@/app/components/Error";
+import { Product } from "@/app/types";
 
 const ProductDetailPage = () => {
     const { id } = useParams();
-    const [product, setProduct] = useState<any | null>(null);
+    const [product, setProduct] = useState<Product | null>(null);
     const [selectedImage, setSelectedImage] = useState<string>("");
     const [selectedColor, setSelectedColor] = useState<string>("Silver");
     const [selectedFeature, setSelectedFeature] = useState<number | null>(null);

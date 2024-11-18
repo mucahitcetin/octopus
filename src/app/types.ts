@@ -5,6 +5,8 @@ export type Product = {
   price: number;
   images: string[];
   rating: number;
+  description:string;
+  reviews: { reviewerName: string; rating: number; comment: string }[];
 };
 
 export interface fetchProductsRes {
