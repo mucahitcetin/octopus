@@ -16,6 +16,7 @@ const LoginPage = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
+
         try {
             const response = await login(username, password);
             console.log("Login Successful:", response);
@@ -56,8 +57,7 @@ const LoginPage = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void 
                     </h1>
                     <p className="text-gray-600 text-lg leading-relaxed">
                         No design degree is required! Effortlessly craft and design stunning and captivating
-                        content using our user-friendly creative editor. With our drag-and-drop technology, anyone can
-                        create amazing marketing materials in.
+                        content using our user-friendly creative editor.
                     </p>
                 </div>
             </div>
@@ -70,12 +70,12 @@ const LoginPage = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void 
                 <form className="space-y-6 w-5/6 mx-auto p-6" onSubmit={handleLogin}>
                     <div>
                         <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                            E-mail Address*
+                            Username*
                         </label>
                         <input
                             type="text"
                             id="username"
-                            placeholder="Enter your e-mail address"
+                            placeholder="Enter your username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             className="mt-1 w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
