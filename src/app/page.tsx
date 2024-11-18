@@ -1,13 +1,22 @@
-import LoginPage from "./pages/login/page";
-import ProductList from "./pages/product-list"
+"use client";
 
+import { useState } from "react";
+import LoginPage from "./login/page";
+import ProductListPage from "./product-list/page";
+import Header from "./components/Header";
 
 const Home = () => {
-  return (
-    <div className=" mx-auto p-4">
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-      <LoginPage />
-    </div>
+  return (
+    <>
+      {isLoggedIn && <Header />}
+      {isLoggedIn ? (
+        <ProductListPage />
+      ) : (
+        <LoginPage setIsLoggedIn={setIsLoggedIn} />
+      )}
+    </>
   );
 };
 
