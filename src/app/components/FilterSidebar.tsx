@@ -5,8 +5,8 @@ import Button from "./Button";
 import { categories } from "../constants";
 
 const FilterSidebar = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   const searchParams = useSearchParams();
   const pathname = usePathname();

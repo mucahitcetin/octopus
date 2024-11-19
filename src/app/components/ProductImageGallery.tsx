@@ -8,7 +8,9 @@ interface Props {
 }
 
 const ProductImageGallery = ({ images }: Props) => {
-  const [selectedImage, setSelectedImage] = useState<string>(images[0]);
+  const [selectedImage, setSelectedImage] = useState<string>(
+    images[0] || "/images/product-not-found.jpg"
+  );
 
   return (
     <div>
@@ -29,11 +31,10 @@ const ProductImageGallery = ({ images }: Props) => {
           <div
             key={index}
             onClick={() => setSelectedImage(img)}
-            className={`w-[80px] h-[80px] bg-gray-200 rounded-md overflow-hidden cursor-pointer border-2 ${
-              selectedImage === img
-                ? "border-blue-500 opacity-100"
-                : "border-gray-300 opacity-50"
-            }`}
+            className={`w-[80px] h-[80px] bg-gray-200 rounded-md overflow-hidden cursor-pointer border-2 ${selectedImage === img
+              ? "border-blue-500 opacity-100"
+              : "border-gray-300 opacity-50"
+              }`}
           >
             <Image
               src={img}
