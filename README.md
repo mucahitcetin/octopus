@@ -1,5 +1,7 @@
 # Octopus
 
+- Canlı: https://octopus-eosin-eta.vercel.app/
+
 ## 🛠️ Projenin Kurulumu ve Çalıştırılması
 
 ### 1. Projeyi Klonlayın
