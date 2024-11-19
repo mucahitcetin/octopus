@@ -1,91 +1,93 @@
 import axios from "axios";
-import { fetchProductsRes, Product } from "../types";
-
-const api = axios.create({
-  baseURL: "https://dummyjson.com",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+import { fetchProductsRes, ProductDetail } from "../types";
 
 const base = "https://dummyjson.com";
 
 type Params = { page?: string; search?: string; category?: string } | undefined;
 
-export const fetchProductById = async (id: number): Promise<Product> => {
-  try {
-    const response = await api.get(`/products/${id}`);
-    return response.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      console.error("API Hatası (fetchProductById):", error.response?.data);
-      throw new Error(error.response?.data?.message || "Ürün detayları yüklenemedi.");
-    }
-    throw new Error("Beklenmeyen bir hata oluştu.");
-  }
-};
-
 export const fetchProducts = async (params: Params): Promise<fetchProductsRes> => {
-  try {
-    const skip = (Number(params?.page || 1) - 1) * 9;
-    let url = `${base}/products?limit=9&skip=${skip}`;
+  const skip = (Number(params?.page || 1) - 1) * 9;
+  let url = `${base}/products?limit=9&skip=${skip}`;
 
-    if (params?.category) {
-      url = `${base}/products/category/${encodeURIComponent(params.category)}`;
-    } else if (params?.search) {
-      url = `${base}/products/search?q=${encodeURIComponent(params.search)}`;
-    }
-
-    const response = await fetch(url, {
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
-      throw new Error("Ürünler yüklenirken bir hata oluştu.");
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error: unknown) {
-    console.error("API Hatası (fetchProducts):", error);
-    throw new Error("Ürünler yüklenemedi.");
+  if (params?.category) {
+    url = `${base}/products/category/${encodeURIComponent(params.category)}`;
+  } else if (params?.search) {
+    url = `${base}/products/search?q=${encodeURIComponent(params.search)}`;
   }
+
+  const response = await fetch(url, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch products: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+
+  return data;
 };
 
+export const fetchProductById = async (id: number): Promise<ProductDetail> => {
+  const response = await fetch(`${base}/products/${id}`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch product by ID ${id}: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+export const addToCart = async (product: { id: number; quantity: number }) => {
+  const response = await fetch(`${base}/carts/1`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      merge: true,
+      products: [product],
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to add product to cart: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+
+  return data;
+};
 
 export const login = async (username: string, password: string) => {
   try {
-    const response = await axios.post(
-      'https://dummyjson.com/auth/login',
+    const res = await axios.post(
+      `${base}/auth/login`,
+      { username, password, expiresInMins: 30 },
       {
-        username,
-        password,
-        expiresInMins: 30,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { "Content-Type": "application/json" },
       }
     );
-    return response.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data?.message || 'Login failed.');
-    }
-    throw new Error('An unexpected error occurred.');
+
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Login failed.");
   }
 };
 
-export const addToCart = async (cartId: number, products: { id: number; quantity: number }[]) => {
-  try {
-    const response = await axios.put(`https://dummyjson.com/carts/${cartId}`, { products });
-    return response.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data?.message || 'Adding to cart failed.');
-    }
-    throw new Error('An unexpected error occurred.');
-  }
-};
+export const getUser = async (token: string) => {
+  const response = await fetch(`${base}/auth/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    credentials: "include",
+  });
 
+  if (!response.ok) {
+    const errorMessage = `Failed to fetch user: ${response.statusText}`;
+    throw new Error(errorMessage);
+  }
+
+  const data = await response.json();
+  return data;
+};
