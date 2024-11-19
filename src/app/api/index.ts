@@ -68,11 +68,6 @@ export const login = async (username: string, password: string) => {
         headers: { "Content-Type": "application/json" },
       }
     );
-
-    console.log(res)
-    if (!res.status==false){
-      throw new Error( "Login failed.");
-    }
     return res.data;
 };
 
