@@ -60,7 +60,7 @@ export const addToCart = async (product: { id: number; quantity: number }) => {
 };
 
 export const login = async (username: string, password: string) => {
-  try {
+
     const res = await axios.post(
       `${base}/auth/login`,
       { username, password, expiresInMins: 30 },
@@ -69,10 +69,11 @@ export const login = async (username: string, password: string) => {
       }
     );
 
+    console.log(res)
+    if (!res.status==false){
+      throw new Error( "Login failed.");
+    }
     return res.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Login failed.");
-  }
 };
 
 export const getUser = async (token: string) => {
